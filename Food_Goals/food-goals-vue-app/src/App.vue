@@ -1,65 +1,49 @@
 <template>
   <div id="app">
-    <input
-        type="text"
-        v-model.trim="search"
-        placeholder="Search foods..."
-        @keyup="searchAllFoods"
-    />
-    <br>
-    <ul>
-      <li v-for="food in foods" :key="food.id" v-on:click="viewFoodDetails">
-        {{ food.description }}
-      </li>
-    </ul>
+
+    <button @click="showFoodSearch = true">ADD FOOD</button>
+
+    <food-search v-bind:allFoods="allFoods"
+                v-if="showFoodSearch"
+                @close="showFoodSearch = false"
+                 v-on:food-added="newFoodAdded"
+                 v-on:delete-food="foodDeleted"
+                 >
+    </food-search>
+
+    <food-table v-bind:savedFoods="savedFoods" v-on:delete-food="foodDeleted">
+
+    </food-table>
 
 
   </div>
 </template>
 
 <script>
-let axios = require('axios');
-import HelloWorld from './components/HelloWorld.vue'
-
+import foodSearch from './components/foodSearch.vue'
+import foodTable from './components/foodTable.vue'
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    foodSearch,
+    foodTable
   },
   data(){
     return {
-      foods: {},
-      search: '',
-      URL: 'https://api.nal.usda.gov/fdc/v1/foods/search?',
-      APIKEY: 'api_key=4lJM36HZ5LpjaQ7bei6cC4JlX6C5xBqohu96XFXH',
-      searchResultUrl: '',
-      foodName: '',
-      foodServing: '',
-      foodCalories: '',
-      foodMacros: []
-
-
+      allFoods: {},
+      savedFoods: [],
+      showFoodSearch: false,
     }
   },
   methods: {
-    searchAllFoods() {
-      let query = this.search
-      this.searchResultUrl = this.URL+ this.APIKEY + '&query=' + query
-      if (this.search) {
-        fetch(this.searchResultUrl)
-            .then(response => response.json())
-            .then(res => {
-              this.foods = res.foods
-            });
-      } else if(!this.search) {
-        this.foods = []
-      }
-      return this.searchResultUrl, this.foods
+    newFoodAdded(newFood){
+      this.savedFoods.push(newFood)
     },
-  },
-  created() {
-    this.searchAllFoods();
+    foodDeleted(newFood){
+      this.$delete(this.savedFoods, newFood)
+    }
   }
+
 }
 
 
