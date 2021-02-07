@@ -1,4 +1,4 @@
-# food-goals-vue-app
+# food-goals-app
 
 ## Project setup
 ```

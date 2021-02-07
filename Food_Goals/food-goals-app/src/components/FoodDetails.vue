@@ -5,20 +5,13 @@
       <div class="modal-wrapper">
         <div class="modal-container">
 
-<!--        <p v-for="food in allFoods">{{ food.description }}</p>-->
           <p>{{ selectedFood.description }}</p>
-          <p>CALORIES: {{selectedFood.foodNutrients[4].value}}</p>
+          <p>CALORIES: {{ selectedFoodCalories }}</p>
 
-
-
-
-
-          <button v-on:click="addFood()">ADD FOOD</button>
-
-          <button class="modal-default-button" @click="$emit('close')">CLOSE
-          </button>
-
-
+          <button v-on:click="addFood()" @click="$emit('close')">ADD FOOD</button>
+          <div class="close-button topright">
+            <button class="modal-default-button" @click="$emit('close')">X</button>
+          </div>
 
         </div>
       </div>
@@ -29,26 +22,33 @@
 
 <script>
 export default {
-name: "foodDetails",
+  name: "foodDetails",
   props: {
     selectedFood: Object,
+    selectedFoodCalories: Number,
+    showFoodSearch: Boolean,
+    search: String
   },
   data: function() {
     return {
-      foodName: '',
-      foodCalories: '',
+      foodCalories: 0
     }
   },
-   methods: {
+  methods: {
     addFood(){
-
-      let newFood = {
+      let calories
+      this.selectedFood.foodNutrients.forEach(function (nutrient){
+        if(nutrient.nutrientName == 'Energy'){
+          calories = nutrient.value
+        }
+      })
+      let food = {
         name: this.selectedFood.description,
-        calories: this.selectedFood.foodNutrients[4].value
+        calories: calories
       }
-      this.$emit('add-food', newFood)
+      this.$emit('add-food', food)
     },
-   }
+  },
 
 }
 
@@ -104,5 +104,22 @@ name: "foodDetails",
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.close-button {
+  border: none;
+  display: inline-block;
+  padding: 8px 16px;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.topright{
+  position: absolute;
+  right: 30%;
+  top: 38%;
 }
 </style>
