@@ -37,14 +37,29 @@ export default {
   methods: {
     addFood(){
       let calories
+      let carbs
+      let protein
+      let fat
       this.selectedFood.foodNutrients.forEach(function (nutrient){
         if(nutrient.nutrientName == 'Energy'){
           calories = nutrient.value
         }
+        if(nutrient.nutrientName == 'Protein'){
+          protein = nutrient.value
+        }
+        if(nutrient.nutrientName == 'Carbohydrate, by difference'){
+          carbs = nutrient.value
+        }
+        if(nutrient.nutrientName == 'Total lipid (fat)'){
+          fat = nutrient.value
+        }
       })
       let food = {
         name: this.selectedFood.description,
-        calories: calories
+        calories: calories,
+        protein: protein,
+        carbs: carbs,
+        fat: fat,
       }
       this.$emit('add-food', food)
     },

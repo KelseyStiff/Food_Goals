@@ -128,7 +128,7 @@ export default {
   width: 300px;
   margin: 0 auto;
   padding: 20px 30px;
-  background-color: #f1e5cc;
+  background-color: #a7deb9;
   border-radius: 2px;
   transition: all 0.3s ease;
   overflow-y:auto;

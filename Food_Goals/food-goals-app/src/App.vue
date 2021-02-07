@@ -10,13 +10,20 @@
       </div>
     </div> <!--    end of page header-->
 
+
+
     <div class="macros-container">
+      <div id="total-calories">
+        <h1>{{ calorieTotal }} <br>
+          <span>calories</span></h1>
+      </div>
       <div class="macros-container-header">
         <h1>Stats</h1>
       </div>
       <div id="chart-style">
         <calories-chart v-bind:chartData="chartData"></calories-chart>
       </div>
+
     </div>
 
     <!--table container-->
@@ -53,18 +60,17 @@ import FoodSearch from './components/FoodSearch.vue'
 import FoodTable from "./components/FoodTable";
 import CaloriesChart from "./components/CaloriesChart";
 
-
 export default {
   name: 'App',
   components: {
     FoodSearch,
     FoodTable,
-    CaloriesChart
+    CaloriesChart,
   },
   data(){
     return {
       savedFoods:  [],
-      showFoodSearch: false
+      showFoodSearch: false,
     }
   },
   methods: {
@@ -81,8 +87,10 @@ export default {
   },
   computed: {
     chartData() {
-      let labels = this.savedFoods.map(rec => rec.name)
-      let calories = this.savedFoods.map(rec => rec.calories)
+      let labels
+      let calories
+        labels = this.savedFoods.map(rec => rec.name)
+        calories = this.savedFoods.map(rec => rec.calories)
 
       return {
         labels: labels,
@@ -90,7 +98,16 @@ export default {
           label: '',
           data: calories,
           backgroundColor: ['#fca8a8','#ffd48a','#7aabc4','#84dd9a', '#8860D0','#8860D0','#C4FFDB','#E483F8','#6AFFC1']
-        }]
+        }],
+      }
+    }
+    ,
+    calorieTotal: function (){
+      if(this.savedFoods){
+        //learned how to use .reduce method on stack overflow (by: OwChallie)
+        return this.savedFoods.reduce(function (prev, cur) {
+          return prev + cur.calories;
+        }, 0)
       }
     }
   }
@@ -107,7 +124,7 @@ export default {
 }
 
 body {
-  background: #deb0b0;
+  background: #f3d0a3;
   height: auto;
   position: relative;
 }
@@ -142,16 +159,25 @@ body {
   position: relative;
   background: white;
   width: 100%;
-  height: 200px;
+  height: 225px;
   margin: 10px 10px 10px 0px;
   -webkit-box-shadow: 0 8px 6px -6px #777;
   -moz-box-shadow: 0 8px 6px -6px #777;
   box-shadow: 0 8px 6px -6px #777;
 }
 
-.macros-container #chart-style{
-  width: 200px;
-  height: 200px;
+.macros-container #total-calories h1{
+  margin: auto;
+  position: absolute;
+  top: 40%;
+  right: 15%;
+  font-size: 50px;
+}
+
+.macros-container #total-calories h1 span{
+  font-size: 15px;
+  position: absolute;
+  left: 20%;
 }
 
 .macros-container-header{
@@ -170,12 +196,20 @@ body {
   margin: auto;
 }
 
+.macros-container #chart-style{
+  padding: 20px;
+  width: 100%;
+  max-width: 180px;
+  height: 180px;
+  position: absolute;
+  top: 8%;
+}
 
 .table-container {
   float: left;
   background: white;
   min-width: 300px;
-  max-width: 800px;
+  max-width: 400px;
   height: 500px;
   -webkit-box-shadow: 0 8px 6px -6px #777;
   -moz-box-shadow: 0 8px 6px -6px #777;

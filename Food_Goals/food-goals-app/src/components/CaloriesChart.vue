@@ -2,20 +2,21 @@
 
 <script>
 
-import { Pie, mixins } from 'vue-chartjs'
+import { Doughnut, mixins } from 'vue-chartjs'
 let { reactiveProp } = mixins
 
 export default {
-  extends: Pie,
-  name: 'BudgetChart',
+  extends: Doughnut,
+  name: 'CaloriesChart',
   mixins: [ reactiveProp ],
   data() {
     return {
       chartOptions: {
+        legend: { display: false },
         scales: {
           xAxes: [
             {
-              type: 'Pie'
+              type: 'donut'
             }
           ]
         }
