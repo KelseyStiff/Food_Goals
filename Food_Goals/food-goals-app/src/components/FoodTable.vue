@@ -1,44 +1,35 @@
 <template>
-  <div>
+  <div id="saved-foods-table">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Calories</th>
+      </tr>
+      </thead>
+      <tbody>
+<!--      food row component is binded with data from saved foods array, v-for loops through array-->
+<!--      to display each food. when edit table is true, delete button is shown-->
+      <food-row
+          v-for="savedFood in savedFoods"
+          v-bind:savedFood="savedFood"
+          v-on:delete-food="deleteFood"
+          v-bind:edit="editTable"
+          v-bind:key="savedFood.key">
+      </food-row>
+      </tbody>
+    </table>
 
-
-<div id="saved-foods-table">
-  <table class="table">
-    <thead>
-    <tr>
-      <th>Name</th>
-      <th>Calories</th>
-    </tr>
-    </thead>
-    <tbody>
-    <food-row
-        v-for="savedFood in savedFoods"
-        v-bind:savedFood="savedFood"
-        v-on:delete-food="deleteFood"
-        v-bind:edit="editTable"
-        v-bind:key="savedFood.key">
-    </food-row>
-    </tbody>
-
-
-  </table>
-
-
-  <div class="edit-table">
-    <img alt="edit table" src="@/assets/edit-table.png" @click="editTable = !editTable" v-model="editTable">
-
-
+<!--    when edit table button is clicked, delete buttons show on table rows-->
+    <div class="edit-table">
+      <img alt="edit table" src="@/assets/edit-table.png" @click="editTable = !editTable" v-model="editTable">
+    </div>
   </div>
-</div>
-</div>
-
-
-
-  
 </template>
 
 <script>
 import FoodRow from "./FoodRow";
+
 export default {
   name: "FoodTable",
   components: {

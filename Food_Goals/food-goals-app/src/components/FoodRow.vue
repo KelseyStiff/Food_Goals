@@ -1,7 +1,9 @@
 <template>
   <tr>
+<!--    table data from savedFood prop passed from App-->
     <td>{{ savedFood.name }}</td>
     <td>{{ savedFood.calories }}</td>
+<!--    delete button activates deleteFood method when clicked-->
     <td v-show="edit"><img v-on:click="deleteFood" src="@/assets/delete.png"></td>
   </tr>
 </template>

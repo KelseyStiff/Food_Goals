@@ -1,43 +1,43 @@
 <template>
   <div id="app">
-
-    <!--    page header-->
+    <!--page header-->
     <div class="header">
       <h1 id="logo">Food Goals</h1>
       <div id="add-food-button">
+        <!--        add food button, when clicked shows food search box for searching API-->
         <img alt="add food" @click="showFoodSearch = true" src="@/assets/add-food-button.png">
-        <br>
       </div>
-    </div> <!--    end of page header-->
+    </div> <!-- end of page header-->
 
+<!--    container for macro stats-->
     <div class="macros-container">
-
       <div class="macros-container-header">
         <h1>Stats</h1>
       </div>
 
-
+<!--      placeholder for total calories, calculated by computed method-->
       <div id="total-calories">
         <h1>{{ calorieTotal }} <br>
           <span>calories</span></h1>
       </div>
-
-        <div id="total-carbs">
-          <h1>{{ carbTotal | decimalPlaces(0) }} <br>
-            <span>carbs</span></h1>
-        </div>
-
-        <div id="total-fat">
-          <h1>{{ fatTotal | decimalPlaces(0) }} <br>
-            <span>fats</span></h1>
-        </div>
-
-        <div id="total-protein">
-          <h1>{{ proteinTotal | decimalPlaces(0) }} <br>
-            <span>protein</span></h1>
-        </div>
+      <!--      placeholder for total carbs, calculated by computed method-->
+      <div id="total-carbs">
+        <h1>{{ carbTotal | decimalPlaces(0) }} <br>
+          <span>carbs</span></h1>
+      </div>
+      <!--      placeholder for total fat, calculated by computed method-->
+      <div id="total-fat">
+        <h1>{{ fatTotal | decimalPlaces(0) }} <br>
+          <span>fats</span></h1>
+      </div>
+      <!--      placeholder for total protein, calculated by computed method-->
+      <div id="total-protein">
+        <h1>{{ proteinTotal | decimalPlaces(0) }} <br>
+          <span>protein</span></h1>
+      </div>
 
       <div id="chart-style">
+<!--        chart component shows calorie intake, is created when food is added to diary -->
         <macros-charts :chartData="chartData"></macros-charts>
       </div>
 
@@ -46,6 +46,8 @@
     <!--table container-->
     <div class="table-container" >
       <div class="table-container-header"><h1>Food Diary</h1></div>
+<!--      food diary table is binded with saved foods array, which contains foods saved from api search results-->
+<!--      delete-food event emitted from table component triggers foodDelete method to remove food from table-->
       <food-table v-bind:savedFoods="savedFoods" v-on:delete-food="foodDeleted"></food-table>
     </div>
 
@@ -60,9 +62,12 @@
 
     <!-- food search input container-->
     <div id="food-search">
+<!--      food search component shows if add food button is clicked, when food-added even is emitted, -->
+<!--      newFoodAdded method add food from search results to table-->
       <food-search v-if="showFoodSearch" @close="showFoodSearch = false" v-on:food-added="newFoodAdded"></food-search>
     </div><!--    end of search input container-->
 
+<!--    credits for images and icons used-->
     <div id="creds">
       Icons made by: <a href="https://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a>
     </div>
@@ -71,8 +76,7 @@
 </template>
 
 <script>
-
-
+// importing vue components
 import FoodSearch from './components/FoodSearch.vue'
 import FoodTable from "./components/FoodTable";
 import MacrosCharts from "./components/MacrosCharts";
@@ -93,9 +97,11 @@ export default {
   },
   methods: {
     newFoodAdded(food){
+      // adds food object emitted from child component, adds to savedFoods array
       this.savedFoods.push(food)
     },
     foodDeleted(food){
+      //loops through savedFoods array to delete selected food
       this.savedFoods = this.savedFoods.filter( function (f){
         if(f != food){
           return true
@@ -104,6 +110,7 @@ export default {
     }
   },
   filters:{
+    //filters decimal places shown on macro totals
     decimalPlaces(total, numOfDecimal){
         return total.toFixed(numOfDecimal)
     }
@@ -114,7 +121,6 @@ export default {
       let calories
         labels = this.savedFoods.map(rec => rec.name)
         calories = this.savedFoods.map(rec => rec.calories)
-
       return {
         labels: labels,
         datasets: [ {
@@ -123,9 +129,9 @@ export default {
           backgroundColor: ['#fca8a8','#ffd48a','#7aabc4','#84dd9a', '#8860D0','#8860D0','#C4FFDB','#E483F8','#6AFFC1']
         }],
       }
-    }
-    ,
+    },
     calorieTotal: function (){
+      //check if saved foods exists, if so calculate total calories
       if(this.savedFoods){
         //learned how to use .reduce method on stack overflow (by: OwChallie)
         return this.savedFoods.reduce(function (prev, cur) {
@@ -134,24 +140,24 @@ export default {
       }
     },
     proteinTotal: function (){
+      //check if saved foods exists, if so calculate total protein
       if(this.savedFoods){
-        //learned how to use .reduce method on stack overflow (by: OwChallie)
         return this.savedFoods.reduce(function (prev, cur) {
           return prev + cur.protein;
         }, 0)
       }
     },
     fatTotal: function (){
+      //check if saved foods exists, if so calculate total fats
       if(this.savedFoods){
-        //learned how to use .reduce method on stack overflow (by: OwChallie)
         return this.savedFoods.reduce(function (prev, cur) {
           return prev + cur.fat;
         }, 0)
       }
     },
     carbTotal: function (){
+      //check if saved foods exists, if so calculate total carbs
       if(this.savedFoods){
-        //learned how to use .reduce method on stack overflow (by: OwChallie)
         return this.savedFoods.reduce(function (prev, cur) {
           return prev + cur.carbs;
         }, 0)
@@ -160,12 +166,9 @@ export default {
   }
 }
 </script>
-
-
-
 <style>
-
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+
 #app{
   font-family: 'Lato', sans-serif;;
 }
@@ -268,7 +271,6 @@ body {
   left: 20%;
 }
 
-
 .macros-container-header{
   background: #fffafa;
   width: 100%;
@@ -325,7 +327,6 @@ body {
   font-size: 20px;
   margin: auto;
 }
-
 
 #notes-container{
   float: right;

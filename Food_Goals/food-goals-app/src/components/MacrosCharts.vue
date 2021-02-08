@@ -1,7 +1,5 @@
 <!-- no template -->
-
 <script>
-
 import { Doughnut, mixins } from 'vue-chartjs'
 let { reactiveProp } = mixins
 

@@ -8,6 +8,7 @@
             <h1>{{ selectedFood.description }}</h1>
           </div>
 
+<!--          details for selected food would be shown here...having issues displaying this data-->
           <div class="modal-body">
             <p>calories{{ }} </p>
             <p>carbs{{ }} </p>
@@ -15,6 +16,7 @@
             <p>fat{{  }} </p>
           </div>
 
+<!--          when add button is clicked, add food method is activated and modal is closed-->
           <button class="add-button" v-on:click="addFood()" @click="$emit('close')">ADD FOOD</button>
           <div class="close-button topright">
             <button @click="$emit('close')">X</button>
@@ -24,7 +26,6 @@
       </div>
     </div>
   </transition>
-
 </template>
 
 <script>
@@ -35,7 +36,6 @@ export default {
     selectedFoodCalories: Number,
     showFoodSearch: Boolean,
     search: String
-
   },
   data: function() {
     return {
@@ -43,6 +43,7 @@ export default {
     }
   },
   methods: {
+    // add food method creates food object from selected foods API data
     addFood(){
       let calories
       let carbs
@@ -62,6 +63,7 @@ export default {
           fat = nutrient.value
         }
       })
+      // food object is created from data
       let food = {
         name: this.selectedFood.description,
         calories: calories,
@@ -69,19 +71,13 @@ export default {
         carbs: carbs,
         fat: fat,
       }
+      // food object is emitted to App for use
       this.$emit('add-food', food)
-      this.$emit('getDetails', food)
     },
-    getDetails(food){
-      this.foodDetails = food
-    }
-
   },
-
 }
 
 </script>
-
 <style scoped>
 .modal-mask {
   position: fixed;

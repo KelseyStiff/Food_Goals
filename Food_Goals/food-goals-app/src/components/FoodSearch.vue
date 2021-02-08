@@ -1,54 +1,54 @@
 <template>
   <div>
-
+<!--    modal is vue component that functions as a popup-->
     <transition name="modal">
       <div class="modal-mask">
         <div class="modal-wrapper">
           <div class="modal-container">
             <div class="modal-body">
 
-              <food-details v-if="showModal"
-                           @close="showModal = false"
-                            v-bind:selectedFood="selectedFood"
-                            v-bind:selected-food-calories="selectedFoodCalories"
-                            v-on:add-food="addNewFood"
-              ></food-details>
-
+<!--              user input uses searchAllFoods method to pull up foods matching the query in API-->
               <label for="search-input">
                 <input
                     id="search-input"
                     type="text"
                     v-model.trim="search"
                     placeholder="Search foods..."
-                    @keyup="searchAllFoods"
-                />
+                    @keyup="searchAllFoods"/>
               </label>
 
+<!--              search results are added to array as user enters queries-->
               <div id="food-search-results-list">
                   <ul class="list">
+
+<!--                    search results are looped through to show each one-->
+<!--                    when a search result is clicked, food-details is called to create-->
+<!--                    and save selected food into an object-->
                     <li v-for="foodSearchResult in foodSearchResults"
                         v-bind:key="foodSearchResult.key"
-                        @click="showModal = true, showFoodDetails(foodSearchResult)"
-                    >
+                        @click="showModal = true, showFoodDetails(foodSearchResult)">
+
+<!--                      name of each food search result is displayed in a list-->
                       {{ foodSearchResult.description }}
                     </li>
                   </ul>
                 </div>
 
+<!--              food details component is an additional modal/popup, when item in search result is clicked,-->
+<!--              food details for food is shown-->
+              <food-details v-if="showModal"
+                            @close="showModal = false"
+                            v-bind:selectedFood="selectedFood"
+                            v-bind:selected-food-calories="selectedFoodCalories"
+                            v-on:add-food="addNewFood">
+              </food-details>
             </div>
-
             <button class="close-button topright" @click="$emit('close')">X</button>
-
           </div>
         </div>
       </div>
     </transition>
-
   </div>
-
-
-
-
 </template>
 
 <script>
@@ -73,13 +73,18 @@ export default {
     };
   },
   methods: {
+    //searches foods in database from search string input
     searchAllFoods() {
+
       let query = this.search
+      //API url set up
       this.searchResultUrl = this.URL+ this.APIKEY + '&query=' + query
       if (this.search) {
+        //fetching data from USDA foods database
         fetch(this.searchResultUrl)
             .then(response => response.json())
             .then(res => {
+              //response from database is json with array of foods within
               this.foodSearchResults = res.foods
             });
       } else if(!this.search) {
@@ -87,9 +92,11 @@ export default {
       }
       return this.searchResultUrl, this.foodSearchResults
     },
+    // assigns selectedFood the search result that is clicked
     showFoodDetails(foodSearchResult){
       this.selectedFood = foodSearchResult
     },
+    //add new food takes in food object from food-details component, emits it to APP for use.
     addNewFood(food){
       this.selectedFood = food
       this.$emit('food-added', food)
@@ -101,7 +108,6 @@ export default {
 }
 </script>
 <style scoped>
-
 .modal-mask {
   position: fixed;
   top: 0;
