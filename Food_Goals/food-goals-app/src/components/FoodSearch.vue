@@ -89,13 +89,6 @@ export default {
     },
     showFoodDetails(foodSearchResult){
       this.selectedFood = foodSearchResult
-
-      foodSearchResult.foodNutrients.forEach(function (nutrient){
-        if(nutrient.nutrientName == 'Energy'){
-          this.selectedFoodCalories = nutrient.value
-        }
-      })
-
     },
     addNewFood(food){
       this.selectedFood = food

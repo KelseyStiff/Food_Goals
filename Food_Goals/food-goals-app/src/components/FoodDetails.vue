@@ -4,11 +4,18 @@
     <div class="modal-mask">
       <div class="modal-wrapper">
         <div class="modal-container">
+          <div class="modal-header">
+            <h1>{{ selectedFood.description }}</h1>
+          </div>
 
-          <p>{{ selectedFood.description }}</p>
-          <p>CALORIES: {{ selectedFoodCalories }}</p>
+          <div class="modal-body">
+            <p>calories{{ }} </p>
+            <p>carbs{{ }} </p>
+            <p>protein{{  }} </p>
+            <p>fat{{  }} </p>
+          </div>
 
-          <button v-on:click="addFood()" @click="$emit('close')">ADD FOOD</button>
+          <button class="add-button" v-on:click="addFood()" @click="$emit('close')">ADD FOOD</button>
           <div class="close-button topright">
             <button @click="$emit('close')">X</button>
           </div>
@@ -28,10 +35,11 @@ export default {
     selectedFoodCalories: Number,
     showFoodSearch: Boolean,
     search: String
+
   },
   data: function() {
     return {
-      foodCalories: 0
+      foodDetails: {}
     }
   },
   methods: {
@@ -41,16 +49,16 @@ export default {
       let protein
       let fat
       this.selectedFood.foodNutrients.forEach(function (nutrient){
-        if(nutrient.nutrientName == 'Energy') {
+        if(nutrient.nutrientName === 'Energy') {
           calories = nutrient.value
         }
-        if(nutrient.nutrientName == 'Protein'){
+        if(nutrient.nutrientName === 'Protein'){
           protein = nutrient.value
         }
-        if(nutrient.nutrientName == 'Carbohydrate, by difference'){
+        if(nutrient.nutrientName === 'Carbohydrate, by difference'){
           carbs = nutrient.value
         }
-        if(nutrient.nutrientName == 'Total lipid (fat)'){
+        if(nutrient.nutrientName === 'Total lipid (fat)'){
           fat = nutrient.value
         }
       })
@@ -62,7 +70,12 @@ export default {
         fat: fat,
       }
       this.$emit('add-food', food)
+      this.$emit('getDetails', food)
     },
+    getDetails(food){
+      this.foodDetails = food
+    }
+
   },
 
 }
@@ -89,19 +102,18 @@ export default {
 
 .modal-container {
   width: 300px;
-  margin: 0px auto;
+  margin: auto;
   padding: 20px 30px;
   background-color: #fff;
   border-radius: 2px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
   position: relative;
 }
 
 
 .modal-body {
-  margin: 20px 0;
+  margin-top: 30px;
 }
 
 .modal-enter {
@@ -116,6 +128,20 @@ export default {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.modal-header{
+  background: #fffafa;
+  width: 100%;
+  height: 40px;
+  display: block;
+  text-align: center;
+  border-bottom: #b7b5b5 solid 2px;
+  position: absolute;
+  top: 0;
+  overflow: auto;
+  left: 0;
+  font-size: 10px;
 }
 
 .close-button button {
@@ -136,5 +162,13 @@ export default {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.add-button{
+  background: #9ede9b;
+  border: none;
+  border-radius: 2px;
+  position: absolute;
+  left: 40%;
 }
 </style>

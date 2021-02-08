@@ -39,7 +39,6 @@
 
       <div id="chart-style">
         <macros-charts :chartData="chartData"></macros-charts>
-
       </div>
 
     </div>
@@ -89,6 +88,7 @@ export default {
     return {
       savedFoods:  [],
       showFoodSearch: false,
+      noData: true,
     }
   },
   methods: {
@@ -171,7 +171,7 @@ export default {
 }
 
 body {
-  background: #f3d0a3;
+  background: #ecc4a5;
   height: auto;
   position: relative;
 }
@@ -205,9 +205,10 @@ body {
 .macros-container {
   position: relative;
   background: white;
-  width: 100%;
+  max-width: 100%;
+  min-width: 550px;
   height: 225px;
-  margin: 10px 10px 10px 0px;
+  margin: 10px;
   -webkit-box-shadow: 0 8px 6px -6px #777;
   -moz-box-shadow: 0 8px 6px -6px #777;
   box-shadow: 0 8px 6px -6px #777;
@@ -258,6 +259,7 @@ body {
   top: 40%;
   right: 60%;
   font-size: 25px;
+  display: inline-block;
 }
 
 .macros-container #total-protein h1 span{
@@ -369,10 +371,10 @@ body {
 #creds {
   color: lightgray;
   font-size: x-small;
-  margin: auto;
-  text-align: center;
   bottom: 0;
-  position: fixed;
+  left: 75%;
+  position: fixed
+
 }
 
 </style>
