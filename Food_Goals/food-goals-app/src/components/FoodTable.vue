@@ -63,7 +63,7 @@ export default {
 #saved-foods-table {
   max-height: 500px;
   overflow: scroll;
-  padding: 20px 20px 0 20px;
+  padding: 0 20px 0 20px;
 }
 
 table {
@@ -72,9 +72,7 @@ table {
 
 table, th {
   border-collapse: collapse;
-  padding: 5px;
   width: 100%;
-
 }
 
 .edit-table{

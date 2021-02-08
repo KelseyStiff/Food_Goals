@@ -10,18 +10,36 @@
       </div>
     </div> <!--    end of page header-->
 
-
-
     <div class="macros-container">
+
+      <div class="macros-container-header">
+        <h1>Stats</h1>
+      </div>
+
+
       <div id="total-calories">
         <h1>{{ calorieTotal }} <br>
           <span>calories</span></h1>
       </div>
-      <div class="macros-container-header">
-        <h1>Stats</h1>
-      </div>
+
+        <div id="total-carbs">
+          <h1>{{ carbTotal | decimalPlaces(0) }} <br>
+            <span>carbs</span></h1>
+        </div>
+
+        <div id="total-fat">
+          <h1>{{ fatTotal | decimalPlaces(0) }} <br>
+            <span>fats</span></h1>
+        </div>
+
+        <div id="total-protein">
+          <h1>{{ proteinTotal | decimalPlaces(0) }} <br>
+            <span>protein</span></h1>
+        </div>
+
       <div id="chart-style">
-        <calories-chart v-bind:chartData="chartData"></calories-chart>
+        <macros-charts :chartData="chartData"></macros-charts>
+
       </div>
 
     </div>
@@ -58,14 +76,14 @@
 
 import FoodSearch from './components/FoodSearch.vue'
 import FoodTable from "./components/FoodTable";
-import CaloriesChart from "./components/CaloriesChart";
+import MacrosCharts from "./components/MacrosCharts";
 
 export default {
   name: 'App',
   components: {
     FoodSearch,
     FoodTable,
-    CaloriesChart,
+    MacrosCharts,
   },
   data(){
     return {
@@ -83,6 +101,11 @@ export default {
           return true
         }
       })
+    }
+  },
+  filters:{
+    decimalPlaces(total, numOfDecimal){
+        return total.toFixed(numOfDecimal)
     }
   },
   computed: {
@@ -107,6 +130,30 @@ export default {
         //learned how to use .reduce method on stack overflow (by: OwChallie)
         return this.savedFoods.reduce(function (prev, cur) {
           return prev + cur.calories;
+        }, 0)
+      }
+    },
+    proteinTotal: function (){
+      if(this.savedFoods){
+        //learned how to use .reduce method on stack overflow (by: OwChallie)
+        return this.savedFoods.reduce(function (prev, cur) {
+          return prev + cur.protein;
+        }, 0)
+      }
+    },
+    fatTotal: function (){
+      if(this.savedFoods){
+        //learned how to use .reduce method on stack overflow (by: OwChallie)
+        return this.savedFoods.reduce(function (prev, cur) {
+          return prev + cur.fat;
+        }, 0)
+      }
+    },
+    carbTotal: function (){
+      if(this.savedFoods){
+        //learned how to use .reduce method on stack overflow (by: OwChallie)
+        return this.savedFoods.reduce(function (prev, cur) {
+          return prev + cur.carbs;
         }, 0)
       }
     }
@@ -169,16 +216,56 @@ body {
 .macros-container #total-calories h1{
   margin: auto;
   position: absolute;
-  top: 40%;
-  right: 15%;
+  top: 35%;
+  right: 10%;
   font-size: 50px;
 }
 
 .macros-container #total-calories h1 span{
   font-size: 15px;
   position: absolute;
+}
+
+.macros-container #total-carbs h1{
+  margin: auto;
+  position: absolute;
+  top: 40%;
+  right: 30%;
+  font-size: 25px;
+}
+
+.macros-container #total-carbs h1 span{
+  font-size: 15px;
+  position: absolute;
+}
+
+.macros-container #total-fat h1 {
+  margin: auto;
+  position: absolute;
+  top: 40%;
+  right: 45%;
+  font-size: 25px;
+}
+
+.macros-container #total-fat h1 span{
+  font-size: 15px;
+  position: absolute;
+}
+
+.macros-container #total-protein h1 {
+  margin: auto;
+  position: absolute;
+  top: 40%;
+  right: 60%;
+  font-size: 25px;
+}
+
+.macros-container #total-protein h1 span{
+  font-size: 15px;
+  position: absolute;
   left: 20%;
 }
+
 
 .macros-container-header{
   background: #fffafa;
@@ -208,8 +295,8 @@ body {
 .table-container {
   float: left;
   background: white;
-  min-width: 300px;
-  max-width: 400px;
+  min-width: 500px;
+  max-width: 50%;
   height: 500px;
   -webkit-box-shadow: 0 8px 6px -6px #777;
   -moz-box-shadow: 0 8px 6px -6px #777;
@@ -218,6 +305,7 @@ body {
   position: relative;
   display: block;
   margin: 10px;
+  overflow-y:auto;
 }
 
 .table-container-header{
@@ -227,7 +315,7 @@ body {
   display: block;
   text-align: center;
   border-bottom: #b7b5b5 solid 2px;
-  position: absolute;
+  position: sticky;
   top: 0;
 }
 
@@ -240,7 +328,7 @@ body {
 #notes-container{
   float: right;
   background: white;
-  width: 300px;
+  width: 40%;
   height: 250px;
   -webkit-box-shadow: 0 8px 6px -6px #777;
   -moz-box-shadow: 0 8px 6px -6px #777;

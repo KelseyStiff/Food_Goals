@@ -30,4 +30,9 @@ img {
 td {
   padding: 5px;
 }
+
+tr {
+  overflow-y:hidden;
+  margin: auto;
+}
 </style>

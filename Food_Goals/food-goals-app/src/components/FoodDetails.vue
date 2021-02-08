@@ -10,7 +10,7 @@
 
           <button v-on:click="addFood()" @click="$emit('close')">ADD FOOD</button>
           <div class="close-button topright">
-            <button class="modal-default-button" @click="$emit('close')">X</button>
+            <button @click="$emit('close')">X</button>
           </div>
 
         </div>
@@ -41,7 +41,7 @@ export default {
       let protein
       let fat
       this.selectedFood.foodNutrients.forEach(function (nutrient){
-        if(nutrient.nutrientName == 'Energy'){
+        if(nutrient.nutrientName == 'Energy') {
           calories = nutrient.value
         }
         if(nutrient.nutrientName == 'Protein'){
@@ -96,12 +96,9 @@ export default {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
+  position: relative;
 }
 
-.modal-header h3 {
-  margin-top: 0;
-  color: #42b983;
-}
 
 .modal-body {
   margin: 20px 0;
@@ -121,20 +118,23 @@ export default {
   transform: scale(1.1);
 }
 
-.close-button {
+.close-button button {
   border: none;
   display: inline-block;
-  padding: 8px 16px;
   vertical-align: middle;
   overflow: hidden;
   text-decoration: none;
   text-align: center;
   white-space: nowrap;
+  background-color: Transparent;
+  background-repeat:no-repeat;
+  cursor:pointer;
+  outline:none;
 }
 
 .topright{
   position: absolute;
-  right: 30%;
-  top: 38%;
+  right: 0;
+  top: 0;
 }
 </style>

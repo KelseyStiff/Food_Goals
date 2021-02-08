@@ -7,7 +7,7 @@ let { reactiveProp } = mixins
 
 export default {
   extends: Doughnut,
-  name: 'CaloriesChart',
+  name: 'MacrosCharts',
   mixins: [ reactiveProp ],
   data() {
     return {
